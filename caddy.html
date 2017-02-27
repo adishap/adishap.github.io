@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Caddy: Web Server for Humans</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- Return to Top -->
+    <a href="javascript:" id="return-to-top">
+        <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+    </a>
+    <!-- NavBar Starts -->
+    <nav class="navbar navbar-custom">
+        <div class="container">
+            <!-- Brand -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/"><strong>Adisha Porwal</strong></a>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+    <!-- Navbar Ends -->
+    <div class="container">
+        <h2>Caddy: Web Server for Humans</h2>
+        <hr>
+        <p>
+            <a href="https://caddyserver.com/">Caddy</a> is web server that process requests via HTTP but with a complete different goal from other webservers like <a href="https://www.apache.org/">Apache</a>, <a href="https://www.nginx.org/">Nginx</a>, or <a href="https://www.lighttpd.net/">lighttpd</a>. Caddy’s primary goal is to be an easy-to-use static file web server so that anyone can host their own websites even with minimal technical knowledge.It is the only web server to serve all live sites over HTTPS by default (with some <a href="https://caddyserver.com/docs/automatic-https">conditions provided</a>) which is pretty cool.
+        </p>
+        <p>
+            <br>
+            <h4>Why Caddy?</h4>
+            <ul>
+                <li>Can be hosted on any platform.</li>
+                <li>HTTPS by Default</li>
+                <li>Easy to configure</li>
+                <li>Forward requests to other endpoints with reverse proxy and load balancing.</li>
+                <li>Serve files without needing the extension in the URL.</li>
+                <li>Fast enough to serve tens of thousands of requests per second on good hardware</li>
+            </ul>
+        </p>
+        <p>
+            <br>
+            <h4>Quick Start:</h4>
+            <ol>
+                <li>Download Caddy for your platform and make sure caddy is in your PATH.</li>
+                <li> `cd` in the folder in which you have website you want to host using terminal. </li>
+                <li> Run `caddy`.</li>
+            </ol>
+            Now redirect to <a href="https://localhost:2015">https://localhost:2015</a> to see if it is working,make sure your project has index.html.
+        </p>
+        <p>
+            <br>
+            <h4>Get more out of Caddy</h4> First make a `caddyfile`, which is an optional text file through which we can modify caddy’s configurations in the same folder as our website or we can provide the path of caddyfile to caddy using:
+            <br>
+            <code>
+                caddy -conf=’path/to/caddyfile’
+            </code>
+            <br>
+            <br>
+            <p>If your website is not in the path of caddy, give the path to your website using `root`
+                <br>
+                <code>
+                caddy -root=’path/to/website’
+            </code>
+            </p>
+            <br>
+            <p> To clean your URL and add `ext` to your caddy file
+                <br>
+                <code>
+                    ext .html
+                </code>
+            </p>
+            <br>
+            <p>To reverse Proxy it to some other port
+                <br>
+                <code>
+                        proxy / http://redirect_url {}
+                    </code>
+            </p>
+            <br>
+            <p>To log the error occurred and show the custom error page
+                <br>
+                <code>
+                errors {
+            <br>
+                    log ../errors.log    # Error log
+            <br>
+                    404 error-404.html   # Custom error page
+            <br>
+                }
+            </code>
+            </p>
+            <br>To hide the existence of a secret folder
+            <br>
+            <code>
+                status 404 /secrets
+            </code>
+        </p>
+            <br>
+        <p>
+            <strong>After all these changes, our caddyfile will look like following:</strong>
+            <br>
+            <code>
+                localhost #server address
+            <br>
+                proxy / http://localhost:8000 {}
+            <br>
+            <br>
+                ext .html   # Clean URLs
+            <br>
+            <br>
+                errors {
+            <br>
+                    log ../errors.log    # Error log
+            <br>
+                    404 error-404.html   # Custom error page
+            <br>
+                }
+            <br>
+            <br>
+                status 404 /secrets
+            </code>
+        </p>
+    </div>
+    <!-- Scripts -->
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+</body>
+
+</html>
+
