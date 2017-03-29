@@ -57,3 +57,36 @@
 .nav .open>a:hover {
     background-color: #6DCCA8;
 }
+
+#chart svg {
+    height: 400px;
+}
+
+#intermediate_chart svg {
+    height: 400px;
+}
+
+#final_chart svg {
+    height: 400px;
+}
+
+#hoverText {
+    position: absolute;
+    top: 50%;
+    left: 55%;
+    transform: translate(-50%, -50%);
+    width: 220px;
+    height: 140px;
+    padding: 5px;
+    background-color: white;
+    border: 1px solid #adadad;
+    border-radius: 3px;
+}
+
+#hoverText h4 {
+    text-align: center;
+}
+
+.vertical-line {
+    cursor: pointer;
+}
