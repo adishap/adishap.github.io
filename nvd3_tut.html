@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/nvd3.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- Return to Top -->
+    <a href="javascript:" id="return-to-top">
+        <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+    </a>
+    <!-- NavBar Starts -->
+    <nav class="navbar navbar-custom">
+        <div class="container">
+            <!-- Brand -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html"><strong>Adisha Porwal</strong></a>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+    <!-- Navbar Ends -->
+    <div class="container">
+        <div id="chart">
+            <svg></svg>
+        </div>
+        <div class="second_step">
+            <div id="intermediate_chart">
+                <svg></svg>
+                <div id="hoverText" class="clearfix" style="display: none;">
+                    <h4>Changes</h4>
+                    <div class="text-center">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="last_step">
+            <div id="final_chart">
+                <svg></svg>
+                <div id="hoverText" class="clearfix" style="display: none;">
+                    <h4>Changes</h4>
+                    <div class="text-center">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Scripts -->
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/d3.min.js"></script>
+    <script type="text/javascript" src="js/nvd3.min.js"></script>
+    <script type="text/javascript" src="js/nvd3_tut.js"></script>
+    <script type="text/javascript">
+    $("#return-to-top").click(function() {
+        "use strict";
+        $("body,html").animate({
+            scrollTop: 0
+        }, 500);
+    });
+    </script>
+</body>
+
+</html>
