@@ -5,8 +5,8 @@ var rawData = {
         "2017-01-02": 997.75,
         "2017-01-03": 1011.44,
         "2017-01-04": 1035.51,
-        "2017-01-05": 1114.38,
-        "2017-01-06": 1004.73,
+        "2017-01-05": 1004.73,
+        "2017-01-06": 1114.38,
         "2017-01-07": 894.02,
         "2017-01-08": 906.2,
         "2017-01-09": 909.8,
@@ -185,6 +185,7 @@ function intermediateChart(chartId, chartParent) {
             .call(chart);
 
         nv.utils.windowResize(chart.update);
+
         var tooltip = $('#hoverText .text-center', chartParent),
             xScale = chart.xAxis.scale(),
             //calculate the yScale

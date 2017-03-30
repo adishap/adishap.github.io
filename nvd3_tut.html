@@ -32,9 +32,122 @@
     </nav>
     <!-- Navbar Ends -->
     <div class="container">
+        <h2 class="title">Invigorate stories with tailored charts</h2>
+        <p>
+            I am co-founder and frontend lead at <a href="http://beta.hashgrowth.com">HashGrowth</a>, where, we are building an app store optimization tool to drive mobile app growth using Interactive Analytics, Keywords Research and Actionable Insights.
+        </p>
+        <div>
+            In Analytics, one of our major features, we were working on visualization of data available from <a href="http://play.google.com/">Google Play</a> and <a href="https://itunes.apple.com/in/genre/ios/id36?mt=8">App Store</a> apps. For one of representation of data, we decided to have a line chart. But that's not enough, we wanted to add another layer of information to it. As <a href="https://www.edwardtufte.com/tufte/">Edward Tufte</a> suggests,
+            <div class="left-align qoute">
+                In good information visualization, there are no rules, no guidelines, no templates, no standard technologies, no stylebooks.. you must simply do whatever it takes…
+            </div>
+        </div>
+        <p>
+            We are using <a href="http://nvd3.org/">NVD3</a> to plot our charts. It is re-Usable charts of <a href="https://d3js.org/">D3</a>. NVD3 charts are highly customizable using D3 and people do <a href="http://ghv.artzub.com/#repo=d3&climit=100&user=mbostock">some</a> <a href="https://www.visualcinnamon.com/babynamesus">real</a> <a href="http://wenchaojiang.github.io/d3game/">crazy</a> <a href="http://bertranddechoux.github.io/d3js-sandbox/mower-demo/index.html">stuff</a> with D3. So, we ended up modifying our line chart using D3 and <a href="https://jquery.com/">jQuery</a>.
+        </p>
+        <p>
+            By the way, we are bitcoin fans and love to watch for bitcoin prices. So, Let’s take the advantage of situation to explain customization we can do with nvd3 graphs. My friend <a href="https://twitter.com/amberja_in">@amberja_in</a> (another co-founder of HashGrowth) has a hunch that bitcoins prices are majorly affected by the political activities around the world. And with beginning of the Trump era, it is a great time to test this theory. A few opinions by <a href="http://www.newsbtc.com/2017/02/06/is-trump-driving-the-current-bitcoin-rally/">Fortune.com</a>, <a href="http://www.coindesk.com/bitcoin-blockchain-trump-go/">CoinDesk</a>, <a href="https://news.bitcoin.com/bitcoin-under-trump-including-a-states-rights-battle/">Wendy McElroy</a> believes the same.
+        </p>
         <div id="chart">
             <svg></svg>
         </div>
+        <p>
+            Initially, (<a href="https://gist.github.com/adishap/7fc88865f932afecaa5b71d2b1e05ffa">github gist 1</a>) is simple line chart using nvd3 with bitcoin price index chart. Now, we can list events from US presidential elections and Trump signing the executive order of banning immigration from seven terror-prone countries. For these events, we will add vertical lines to show on our chart with event details on hovering over the vertical line.
+        </p>
+        <h3>Javascript code to add vertical lines on particular event</h3>
+        <pre>
+
+    function drawVerticalLine(div, response, tooltipDiv, svg, xScale, left, y0, y1) {
+        tooltipDiv.html('');
+        for (date in response) {
+            var p = $("&lt;p&gt;").attr('data-event-date', date),
+                pHtml = "";
+            for (var j = 0; j < response[date].length; j++) {
+                pHtml += response[date][j];
+            }
+            p.html(pHtml);
+
+            tooltipDiv.append(p);
+
+            //draw a vertical line on graph
+            svg.append("line")
+                .style("stroke", "#0e8eff")
+                .style("stroke-width", "2.5px")
+                .attr("x1", xScale(new Date(date)) + left)
+                .attr("y1", y0)
+                .attr("x2", xScale(new Date(date)) + left)
+                .attr("y2", y1)
+                // addClass
+                .attr('class', function(index, classNames) {
+                    return classNames + ' clickable vertical-line';
+                })
+                .attr('data-date', date);
+        }
+
+        div.on('mouseenter', '.vertical-line', function(event) {
+            var y = event.pageY,
+                x = event.pageX,
+                event_date = $(this).attr('data-date');
+
+            $('#hoverText .text-center p', div).hide();
+            $("[data-event-date = '" + event_date + "']", div).show();
+            $('#hoverText', div).show();
+
+            $('#hoverText', div).css({
+                position: 'absolute',
+                left: x - 120,
+                top: y - 60
+            });
+        });
+    }
+
+    nv.addGraph(function() {
+        var chart = nv.models.lineChart()
+            .useInteractiveGuideline(true);
+        chart.tooltip(false);
+
+        chart.xAxis.axisLabel("Date")
+            .tickFormat(function(d) {
+                return d3.time.format('%d/%m/%y')(new Date(d))
+            });
+
+        chart.yAxis
+            .axisLabel('Bitcoin rates (in USD)')
+            .tickFormat(d3.format('.02f'));
+
+        d3.select(chartId)
+            .datum(data())
+            .transition().duration(500)
+            .call(chart);
+
+        nv.utils.windowResize(chart.update);
+
+        var tooltip = $('#hoverText .text-center', chartParent),
+            xScale = chart.xAxis.scale(),
+            //calculate the yScale
+            yScale = chart.yAxis.scale(),
+            left = chart.margin().left,
+            top = chart.margin().top,
+            svg = d3.select(chartId),
+            y0 = yScale(chart.yAxis.domain()[0]) + top,
+            y1 = yScale(chart.yAxis.domain()[1]) + top;
+
+        drawVerticalLine(chartParent, events, tooltip, svg, xScale, left, y0, y1);
+        return chart;
+    });
+        </pre>
+        <h3>HTML code to add vertical lines on particular event and tooltip for that event</h3>
+        <pre>
+
+        &lt;div id="intermediate_chart"&gt;
+            &lt;svg&gt;&lt;/svg&gt;
+            &lt;div id="hoverText" class="clearfix" style="display: none;"&gt;
+                &lt;h4&gt;Changes&lt;/h4&gt;
+                &lt;div class="text-center"&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        </pre>
         <div class="second_step">
             <div id="intermediate_chart">
                 <svg></svg>
@@ -45,6 +158,37 @@
                 </div>
             </div>
         </div>
+        <p>
+            The above code(<a href="https://gist.github.com/adishap/ae1f0f9e63f42f3fb366a6d2d1be4b0d">github gist 2</a>) will detect the hovering over the vertical line. Now, we need to add a function which will hide the event details when our mouse pointer is away from the particular event's vertical line.
+        </p>
+        <h3>Javascript code to hide hovertext</h3>
+        <pre>
+
+    function isNear($element, distance, event) {
+        var left = $element.offset().left - distance,
+            right = left + $element.width() + (2 * distance),
+            x = event.pageX;
+
+        return (x > left && x < right);
+    };
+
+    function hideHoverDiv(div) {
+        var event_date;
+        $('#hoverText p', div).each(function() {
+            if ($(this).is(':visible')) {
+                event_date = ($(this).data().eventDate);
+            }
+        });
+        if (event_date !== undefined) {
+            if (!isNear($("[data-date = '" + event_date + "']"), 80, event)) {
+                div.find('#hoverText').hide();
+            }
+        }
+    }
+    $('.step').on('mousemove', function(event) {
+        hideHoverDiv($('.step'));
+    });
+        </pre>
         <div class="last_step">
             <div id="final_chart">
                 <svg></svg>
@@ -55,6 +199,15 @@
                 </div>
             </div>
         </div>
+        <p>
+            [<a href="https://gist.github.com/adishap/cb5d53908206af9015f59368ffd49bd3">Complete Code</a>]
+        </p>
+        <p>
+            Visualizing the chart, we can wrap up that when the election results were out and Trump was a winner, bitcoin value decreased with a huge spike. Soon, bitcoins started recovering and with the Trump’s words in inauguration speech, Bitcoins’ price started increasing and there was a great increase in price after the trump’s order of banning immigration. So from now keeping an eye on Trump’s action.
+        </p>
+        <p>
+            Coming back to chart visualization, it is much more informative, it is more interactive, it is more customized. The decision on the basis of charts are reliable. It completes two goals of presenting data, which are, our story is conveyed and credibility is established.
+        </p>
     </div>
     <!-- Scripts -->
     <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -63,6 +216,15 @@
     <script type="text/javascript" src="js/nvd3.min.js"></script>
     <script type="text/javascript" src="js/nvd3_tut.js"></script>
     <script type="text/javascript">
+    // Scroll to Top
+    $(window).scroll(function() {
+        "use strict";
+        if ($(this).scrollTop() >= 50) {
+            $("#return-to-top").fadeIn(200);
+        } else {
+            $("#return-to-top").fadeOut(200);
+        }
+    });
     $("#return-to-top").click(function() {
         "use strict";
         $("body,html").animate({
