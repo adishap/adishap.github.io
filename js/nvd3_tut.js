@@ -150,7 +150,7 @@ function isNear($element, distance, event) {
     return (x > left && x < right);
 };
 
-function hideHoverDiv(div) {
+function hideHoverDiv(div, event) {
     var event_date;
     $('#hoverText p', div).each(function() {
         if ($(this).is(':visible')) {
@@ -206,5 +206,5 @@ intermediateChart("#intermediate_chart svg", $('.second_step'));
 intermediateChart("#final_chart svg", $('.last_step'));
 
 $('.last_step').on('mousemove', function(event) {
-    hideHoverDiv($('.last_step'));
+    hideHoverDiv($('.last_step'), event);
 });
